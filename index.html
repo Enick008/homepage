@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>แดชบอร์ดกองช่างสุขาภิบาล • เทศบาลนครเกาะสมุย</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://img2.pic.in.th/pic/imagefa65b0afe859e7c3.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://img2.pic.in.th/pic/imagefa65b0afe859e7c3.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://img2.pic.in.th/pic/imagefa65b0afe859e7c3.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: 'Sarabun', 'Prompt', sans-serif;
+            background: radial-gradient(circle at top left, #eff6ff 0%, #f8fafc 45%, #f1f5f9 100%);
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Prompt', 'Sarabun', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.35s ease-out both;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* สไตล์ปุ่ม iOS-like */
+        .ios-button {
+            padding: 0.68rem 1.35rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .ios-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .ios-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 16px rgba(15, 23, 42, 0.14);
+        }
+        .ios-button:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08);
+        }
+
+        .ios-button-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+        }
+        .ios-button-demo {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+        }
+        .ios-button-secondary {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+        }
+        .ios-button-warning {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #451a03;
+        }
+        .ios-button-danger {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: #ffffff;
+        }
+
+        /* สไตล์ปุ่มเปิด Dropdown และรายการใน Dropdown */
+        .dropdown-trigger {
+            padding: 0.45rem 0.75rem;
+            border-radius: 0.7rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f8fafc;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            transition: all 0.18s ease;
+            cursor: pointer;
+        }
+        .dropdown-trigger:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+        .dropdown-trigger.active-trigger {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 0.35rem);
+            left: 0;
+            min-width: 265px;
+            max-width: 92vw;
+            max-height: 72vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.9rem;
+            box-shadow: 0 14px 28px -6px rgba(15, 23, 42, 0.18);
+            padding: 0.4rem;
+            z-index: 60;
+            animation: dropdownPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes dropdownPop {
+            from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .menu-item {
+            padding: 0.48rem 0.7rem;
+            border-radius: 0.65rem;
+            font-size: 0.84rem;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            font-weight: 500;
+            color: #1e293b;
+            text-decoration: none;
+            cursor: pointer;
+            margin-bottom: 0.2rem;
+        }
+        .menu-item:last-child {
+            margin-bottom: 0;
+        }
+        .menu-item:hover {
+            transform: translateX(3px);
+            border-color: rgba(37, 99, 235, 0.3);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+        }
+        .menu-item.active-menu {
+            outline: 2px solid #2563eb;
+            outline-offset: -1px;
+            font-weight: 600;
+        }
+        .menu-item i {
+            width: 1.05rem;
+            text-align: center;
+            font-size: 0.86rem;
+            flex-shrink: 0;
+        }
+
+        /* สีพื้นหลัง Menu Item คงโทนเดิม */
+        .bg-teal-100 { background-color: #e6fffa; }
+        .bg-pink-100 { background-color: #ffe6f0; }
+        .bg-green-100 { background-color: #e6ffe6; }
+        .bg-lime-100 { background-color: #f0ffe6; }
+        .bg-blue-100 { background-color: #e6f0ff; }
+        .bg-cyan-100 { background-color: #e0faff; }
+        .bg-orange-100 { background-color: #fff0e6; }
+        .bg-amber-100 { background-color: #fffbe6; }
+        .bg-purple-100 { background-color: #f0e6ff; }
+        .bg-indigo-100 { background-color: #e6e6ff; }
+        .bg-yellow-100 { background-color: #ffffe6; }
+        .bg-emerald-100 { background-color: #e6fffa; }
+        .bg-lightgreen-100 { background-color: #f0ffe6; }
+        .bg-peach-100 { background-color: #ffe6e6; }
+        .bg-azure-100 { background-color: #e6faff; }
+        .bg-sky-100 { background-color: #e0f2fe; }
+
+        /* Form Elements */
+        input[type="date"], input[type="text"], input[type="password"], select.compact-select {
+            padding: 0.68rem 0.95rem;
+            border-radius: 0.8rem;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        input[type="date"]:focus, input[type="text"]:focus, input[type="password"]:focus, select.compact-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        #modalContent {
+            background-color: #ffffff;
+            border-radius: 1.75rem;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+        }
+        #modalContent .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-10%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+
+        /* 🐈 แอนิเมชันน้องแมวส้ม 🐈 */
+        .walking-cat-container {
+            position: fixed;
+            bottom: 2.75rem;
+            left: 0;
+            z-index: 40;
+            cursor: pointer;
+            animation: walk-across 35s linear infinite;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .walking-cat-container:hover {
+            animation-play-state: paused;
+            transform: scale(1.2);
+        }
+        .walking-cat-container:hover .walking-cat {
+            animation-play-state: paused;
+        }
+        .walking-cat {
+            font-size: 3.2rem;
+            display: inline-block;
+            animation: cat-bounce 0.4s alternate infinite cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(3px 5px 6px rgba(0,0,0,0.22));
+        }
+        @keyframes walk-across {
+            0% { transform: translateX(-150px) scaleX(-1); }
+            49% { transform: translateX(calc(100vw + 150px)) scaleX(-1); }
+            50% { transform: translateX(calc(100vw + 150px)) scaleX(1); }
+            99% { transform: translateX(-150px) scaleX(-1); }
+            100% { transform: translateX(-150px) scaleX(-1); }
+        }
+        @keyframes cat-bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-12px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+<!-- 🔐 หน้าต่างเข้าสู่ระบบ -->
+<div id="loginOverlay" class="fixed inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-blue-800 flex items-center justify-center z-50 p-4">
+    <div class="bg-white/95 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full fade-in border border-white/60">
+        <div class="text-center mb-7">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-100 text-blue-600 text-4xl mb-4 shadow-inner border border-blue-200/60">
+                🔐
+            </div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 mb-2">
+                เทศบาลนครเกาะสมุย
+            </span>
+            <h2 class="text-2xl font-bold text-slate-900">กองช่างสุขาภิบาล</h2>
+            <p class="text-slate-500 text-sm mt-1">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบแดชบอร์ด</p>
+        </div>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">ชื่อผู้ใช้งาน (Username)</label>
+                <input type="text" id="loginUsername" class="w-full" placeholder="กรอกชื่อผู้ใช้งาน" required autocomplete="username">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">รหัสผ่าน (Password)</label>
+                <input type="password" id="loginPassword" class="w-full" placeholder="กรอกรหัสผ่าน" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="loginBtn" class="ios-button ios-button-primary w-full mt-3 justify-center py-3">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </button>
+        </form>
+
+        <!-- ปุ่มเข้าโหมดทดลองดูตัวอย่าง (Demo Preview) -->
+        <div class="mt-4 pt-4 border-t border-slate-100">
+            <button type="button" onclick="enterDemoMode()" class="ios-button ios-button-demo w-full justify-center py-2.5 text-sm">
+                <i class="fas fa-play-circle"></i> เข้าสู่ระบบทดลองดูตัวอย่าง (Demo Preview)
+            </button>
+        </div>
+
+        <div class="text-center mt-5 text-xs text-slate-400">
+            ระบบสนับสนุนการตัดสินใจแบบรวมศูนย์ • เฉพาะเจ้าหน้าที่ที่ได้รับอนุญาต
+        </div>
+    </div>
+</div>
+
+<!-- 🖥️ เนื้อหาหลักของแดชบอร์ด -->
+<div id="mainDashboard" class="hidden flex-col min-h-screen w-full">
+    <!-- แถบส่วนหัว (Header) ตามภาพแนบ: แสดงเต็มขนาดเมื่ออยู่หน้าหลัก และซ่อนหายไปอัตโนมัติเมื่อเปิดเมนูย่อย -->
+    <header id="dashboardHeader" class="bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700 text-white px-4 sm:px-6 py-4 shadow-lg border-b border-white/10 transition-all duration-200">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-center flex-wrap gap-3">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center text-2xl sm:text-3xl shadow-inner border border-white/15">
+                    🏢
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h1 class="text-lg sm:text-2xl font-bold tracking-tight">กองช่างสุขาภิบาล</h1>
+                        <span id="systemStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
+                            ● พร้อมใช้งาน
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-blue-100/90 mt-0.5">เทศบาลนครเกาะสมุย • ระบบสนับสนุนการตัดสินใจแบบรวมศูนย์</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <div class="text-right">
+                    <span id="welcomeUser" class="block text-xs sm:text-sm font-medium text-white"></span>
+                    <span id="currentDate" class="block text-[11px] sm:text-xs text-blue-200"></span>
+                </div>
+                <button onclick="logout()" class="ios-button ios-button-secondary text-xs sm:text-sm py-2 px-3.5">
+                    <i class="fas fa-sign-out-alt text-rose-600"></i> ออก
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- แถบเมนูแบบ Dropdown (จะซ่อนอัตโนมัติเมื่อเข้าสู่จอย่อยเต็มจอ และกดกลับหน้าหลักเพื่อเรียกคืน) -->
+    <nav id="dashboardDropdownNav" class="bg-white/95 backdrop-blur border-b border-slate-200/90 px-4 sm:px-6 py-2 shadow-sm z-30 sticky top-0 transition-all duration-200">
+        <div class="max-w-[1600px] mx-auto flex items-center justify-between flex-wrap gap-2">
+            <!-- กลุ่มปุ่ม Dropdown แยกตามหมวดหมู่ -->
+            <div class="flex items-center flex-wrap gap-1.5 sm:gap-2" id="dropdownBarContainer">
+                <!-- ปุ่มหน้าหลักประกาศข่าว -->
+                <button type="button" id="homeMenuBtn" onclick="showNewsWorkspace(); closeAllDropdowns();" class="dropdown-trigger !bg-blue-600 !text-white !border-blue-600 shadow-sm">
+                    <i class="fas fa-home"></i>
+                    <span>หน้าหลัก • ประกาศข่าว</span>
+                </button>
+
+                <!-- Dropdown 1: ระบบงานบริหาร & โครงการ -->
+                <div class="relative dropdown-wrapper">
+                    <button type="button" onclick="toggleDropdown('dd-admin', this)" class="dropdown-trigger">
+                        <i class="fas fa-folder-open text-teal-600"></i>
+                        <span>งานบริหาร & โครงการ (7)</span>
+                        <i class="fas fa-chevron-down text-[10px] text-slate-400 ml-0.5 transition-transform duration-200 chevron-icon"></i>
+                    </button>
+                    <div id="dd-admin" class="dropdown-panel hidden">
+                        <div class="px-2 py-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ยืนยันสิทธิ์ Token อัตโนมัติ</div>
+                        <a onclick="selectDropdownMenu('https://utilities-information.netlify.app/', 'ระบบรายงานสาธารณูปโภค', true, this)" class="menu-item bg-teal-100"><i class="fas fa-chart-line text-teal-700"></i> <span>ระบบรายงานสาธารณูปโภค</span></a>
+                        <a onclick="selectDropdownMenu('https://documenttracking.netlify.app/', 'งานสารบรรณ', true, this)" class="menu-item" style="background-color: #ffe0f0;"><i class="fas fa-file-alt text-pink-700"></i> <span>งานสารบรรณ</span></a>
+                        <a onclick="selectDropdownMenu('https://script.google.com/macros/s/AKfycbwSBBtS6QVE1aLsyKuoVFXE7SJ2xpfcWS23HEe-d_d7GnG-DctZOUDo03XAUWtMXb6E/exec', 'ติดตามโครงการขยะใหม่ 68-70', true, this)" class="menu-item bg-lime-100"><i class="fas fa-trash-alt text-lime-700"></i> <span>ติดตามโครงการขยะใหม่ 68-70</span></a>
+                        <a onclick="selectDropdownMenu('https://script.google.com/macros/s/AKfycbyF1D7sLjo3nE9zKUYqng1lKtuBhvWqRFT_er0v-mPZuBUCmX2GlxYTkEiUIJXaGZxR/exec', 'ติดตามโครงการขยะเก่า 68-70', true, this)" class="menu-item bg-orange-100"><i class="fas fa-history text-orange-700"></i> <span>ติดตามโครงการขยะเก่า 68-70</span></a>
+                        <a onclick="selectDropdownMenu('https://samuiproject.netlify.app/', 'อัพโหลด/ดาวน์โหลดเอกสาร', true, this)" class="menu-item bg-emerald-100"><i class="fas fa-cloud-upload-alt text-emerald-700"></i> <span>อัพโหลด/ดาวน์โหลดเอกสาร</span></a>
+                        <a onclick="selectDropdownMenu('https://script.google.com/macros/s/AKfycbz72aLIWtxS1vIAcvcxL86ukegVFEQVZduCQnc5-RInAHJm63z3luKuVR91m7ewOFGa/exec', 'รายงานปริมาณขยะ', true, this)" class="menu-item bg-green-100"><i class="fas fa-recycle text-green-700"></i> <span>รายงานปริมาณขยะ</span></a>
+                        <a onclick="selectDropdownMenu('https://script.google.com/macros/s/AKfycbxf_PAFyx3DzjZa_75foNJI5GceyQvgVuVMW0T5nqZZEuNDpYKI4wckBpdndX5779EidQ/exec', 'ข้อมูลรถส่วนกลาง', true, this)" class="menu-item bg-blue-100"><i class="fas fa-car-side text-blue-700"></i> <span>ข้อมูลรถส่วนกลาง</span></a>
+                    </div>
+                </div>
+
+                <!-- Dropdown 2: บริการประชาชน & ซ่อมบำรุง/SCADA -->
+                <div class="relative dropdown-wrapper">
+                    <button type="button" onclick="toggleDropdown('dd-service', this)" class="dropdown-trigger">
+                        <i class="fas fa-tools text-indigo-600"></i>
+                        <span>บริการ & ซ่อมบำรุง/SCADA (8)</span>
+                        <i class="fas fa-chevron-down text-[10px] text-slate-400 ml-0.5 transition-transform duration-200 chevron-icon"></i>
+                    </button>
+                    <div id="dd-service" class="dropdown-panel hidden">
+                        <div class="px-2 py-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ยืนยันสิทธิ์ Token อัตโนมัติ</div>
+                        <a onclick="selectDropdownMenu('https://pipe-link-request.netlify.app/', 'คำร้องขอเชื่อมท่อ', true, this)" class="menu-item bg-teal-100"><i class="fas fa-wrench text-teal-700"></i> <span>คำร้องขอเชื่อมท่อ</span></a>
+                        <a onclick="selectDropdownMenu('https://sanitaryservice.netlify.app/', 'บริการดูดสิ่งปฏิกูล', true, this)" class="menu-item bg-amber-100"><i class="fas fa-truck-moving text-amber-700"></i> <span>บริการดูดสิ่งปฏิกูล</span></a>
+                        <a onclick="selectDropdownMenu('https://script.google.com/macros/s/AKfycbzg9T_cNE5Sres5Esn4xVfgUehhzWJy0Hp581sWBfLmtrQ_EJjTl-nd_fFYCcRuEQ5S/exec', 'รถสุขาเคลื่อนที่', true, this)" class="menu-item bg-purple-100"><i class="fas fa-toilet text-purple-700"></i> <span>รถสุขาเคลื่อนที่</span></a>
+                        <a onclick="selectDropdownMenu('https://samui-mobile-toilet-booking.netlify.app/', 'รถสุขาเคลื่อนที่(ใหม่)', true, this)" class="menu-item bg-purple-100"><i class="fas fa-toilet text-purple-700"></i> <span>รถสุขาเคลื่อนที่(ใหม่)</span></a>
+                        <a onclick="selectDropdownMenu('https://samui-drain-repair.netlify.app/', 'แจ้งซ่อมฝาท่อ', true, this)" class="menu-item bg-indigo-100"><i class="fas fa-road text-indigo-700"></i> <span>แจ้งซ่อมฝาท่อ</span></a>
+                        <a onclick="selectDropdownMenu('https://complainsystemfull.netlify.app/', 'แจ้งเรื่องร้องเรียน', true, this)" class="menu-item bg-yellow-100"><i class="fas fa-bullhorn text-yellow-700"></i> <span>แจ้งเรื่องร้องเรียน</span></a>
+                        <a onclick="selectDropdownMenu('https://fixcarsamui.netlify.app/', 'ระบบซ่อมบำรุง', true, this)" class="menu-item bg-orange-100"><i class="fas fa-tools text-orange-700"></i> <span>ระบบซ่อมบำรุง</span></a>
+                        <a onclick="selectDropdownMenu('https://scadawastewater.netlify.app/', 'ระบบตรวจวัด SCADA', true, this)" class="menu-item bg-cyan-100"><i class="fas fa-tachometer-alt text-cyan-700"></i> <span>ระบบตรวจวัด SCADA</span></a>
+                    </div>
+                </div>
+
+                <!-- Dropdown 3: ระบบภายนอก & ติดตามภาคสนาม -->
+                <div class="relative dropdown-wrapper">
+                    <button type="button" onclick="toggleDropdown('dd-external', this)" class="dropdown-trigger">
+                        <i class="fas fa-satellite-dish text-sky-600"></i>
+                        <span>ระบบภายนอก & ติดตาม (4)</span>
+                        <i class="fas fa-chevron-down text-[10px] text-slate-400 ml-0.5 transition-transform duration-200 chevron-icon"></i>
+                    </button>
+                    <div id="dd-external" class="dropdown-panel hidden">
+                        <div class="px-2 py-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ลิงก์ระบบภายนอก</div>
+                        <a onclick="selectDropdownMenu('https://iot.smartway.co.th/samui_pole/index.php', 'คุณภาพอากาศ', false, this)" class="menu-item bg-sky-100"><i class="fas fa-wind text-sky-700"></i> <span>คุณภาพอากาศ</span></a>
+                        <a onclick="selectDropdownMenu('https://app.smartway.co.th/login.php', 'ระบบติดตามรถ', false, this)" class="menu-item bg-azure-100"><i class="fas fa-car text-blue-700"></i> <span>ระบบติดตามรถ</span></a>
+                        <a onclick="selectDropdownMenu('https://sanitaryview.cam.hypebizsoft.com/', 'ดูกล้องสำนักงาน', false, this)" class="menu-item bg-sky-50"><i class="fas fa-video text-slate-700"></i> <span>ดูกล้องสำนักงาน</span></a>
+                        <a onclick="selectDropdownMenu('https://www.deyecloud.com/business/maintain/plant', 'ระบบโซล่าเซลล์', false, this)" class="menu-item bg-amber-50"><i class="fas fa-solar-panel text-amber-700"></i> <span>ระบบโซล่าเซลล์</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ดรอปดาวน์เลือกด่วนรวมทุกระบบ (Quick Select Dropdown) -->
+            <div class="w-full sm:w-auto sm:min-w-[245px]">
+                <select id="quickMenuSelect" onchange="handleQuickSelect(this)" class="compact-select w-full !py-1.5 !px-3 text-xs sm:text-sm font-medium text-slate-700 bg-slate-50/90 cursor-pointer">
+                    <option value="">⚡ เลือกระบบงานด่วนทั้งหมด (19 ระบบ)...</option>
+                    <optgroup label="── ระบบงานภายใน (Auto Token) ──">
+                        <option value="internal|https://utilities-information.netlify.app/|ระบบรายงานสาธารณูปโภค">📊 ระบบรายงานสาธารณูปโภค</option>
+                        <option value="internal|https://documenttracking.netlify.app/|งานสารบรรณ">📄 งานสารบรรณ</option>
+                        <option value="internal|https://script.google.com/macros/s/AKfycbwSBBtS6QVE1aLsyKuoVFXE7SJ2xpfcWS23HEe-d_d7GnG-DctZOUDo03XAUWtMXb6E/exec|ติดตามโครงการขยะใหม่ 68-70">🗑️ ติดตามโครงการขยะใหม่ 68-70</option>
+                        <option value="internal|https://script.google.com/macros/s/AKfycbyF1D7sLjo3nE9zKUYqng1lKtuBhvWqRFT_er0v-mPZuBUCmX2GlxYTkEiUIJXaGZxR/exec|ติดตามโครงการขยะเก่า 68-70">🕒 ติดตามโครงการขยะเก่า 68-70</option>
+                        <option value="internal|https://pipe-link-request.netlify.app/|คำร้องขอเชื่อมท่อ">🔧 คำร้องขอเชื่อมท่อ</option>
+                        <option value="internal|https://sanitaryservice.netlify.app/|บริการดูดสิ่งปฏิกูล">🚛 บริการดูดสิ่งปฏิกูล</option>
+                        <option value="internal|https://script.google.com/macros/s/AKfycbzg9T_cNE5Sres5Esn4xVfgUehhzWJy0Hp581sWBfLmtrQ_EJjTl-nd_fFYCcRuEQ5S/exec|รถสุขาเคลื่อนที่">🚻 รถสุขาเคลื่อนที่</option>
+                        <option value="internal|https://samui-mobile-toilet-booking.netlify.app/|รถสุขาเคลื่อนที่(ใหม่)">🚻 รถสุขาเคลื่อนที่(ใหม่)</option>
+                        <option value="internal|https://samui-drain-repair.netlify.app/|แจ้งซ่อมฝาท่อ">🛣️ แจ้งซ่อมฝาท่อ</option>
+                        <option value="internal|https://complainsystemfull.netlify.app/|แจ้งเรื่องร้องเรียน">📢 แจ้งเรื่องร้องเรียน</option>
+                        <option value="internal|https://samuiproject.netlify.app/|อัพโหลด/ดาวน์โหลดเอกสาร">☁️ อัพโหลด/ดาวน์โหลดเอกสาร</option>
+                        <option value="internal|https://script.google.com/macros/s/AKfycbz72aLIWtxS1vIAcvcxL86ukegVFEQVZduCQnc5-RInAHJm63z3luKuVR91m7ewOFGa/exec|รายงานปริมาณขยะ">♻️ รายงานปริมาณขยะ</option>
+                        <option value="internal|https://fixcarsamui.netlify.app/|ระบบซ่อมบำรุง">🛠️ ระบบซ่อมบำรุง</option>
+                        <option value="internal|https://scadawastewater.netlify.app/|ระบบตรวจวัด SCADA">📟 ระบบตรวจวัด SCADA</option>
+                        <option value="internal|https://script.google.com/macros/s/AKfycbxf_PAFyx3DzjZa_75foNJI5GceyQvgVuVMW0T5nqZZEuNDpYKI4wckBpdndX5779EidQ/exec|ข้อมูลรถส่วนกลาง">🚗 ข้อมูลรถส่วนกลาง</option>
+                    </optgroup>
+                    <optgroup label="── ระบบภายนอก & ติดตามภาคสนาม ──">
+                        <option value="external|https://iot.smartway.co.th/samui_pole/index.php|คุณภาพอากาศ">🌬️ คุณภาพอากาศ</option>
+                        <option value="external|https://app.smartway.co.th/login.php|ระบบติดตามรถ">📍 ระบบติดตามรถ</option>
+                        <option value="external|https://sanitaryview.cam.hypebizsoft.com/|ดูกล้องสำนักงาน">📹 ดูกล้องสำนักงาน</option>
+                        <option value="external|https://www.deyecloud.com/business/maintain/plant|ระบบโซล่าเซลล์">☀️ ระบบโซล่าเซลล์</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex flex-1 flex-col max-w-[1600px] w-full mx-auto">
+        <!-- พื้นที่ทำงานหลักเต็มความกว้าง -->
+        <section id="mainWorkspaceSection" class="flex-1 p-4 sm:p-6 overflow-y-auto relative z-10 flex flex-col">
+            <!-- มุมมองที่ 1: หน้าหลักประกาศข่าว -->
+            <div id="newsWorkspace" class="space-y-5">
+                <!-- แถบการ์ดสรุปภาพรวม -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/70 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500">ประกาศข่าวทั้งหมด</p>
+                            <p id="newsCountBadge" class="text-2xl font-bold text-blue-700 mt-1">-</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/70 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500">ระบบเชื่อม Token อัตโนมัติ</p>
+                            <p class="text-2xl font-bold text-emerald-700 mt-1">15 ระบบ</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/70 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500">หมดเวลาเมื่อไม่ใช้งาน</p>
+                            <p class="text-2xl font-bold text-amber-600 mt-1">20 นาที</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- กล่องประกาศข่าว -->
+                <div class="bg-white p-5 sm:p-7 rounded-3xl shadow-md border border-slate-200/70">
+                    <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+                                <span>📢</span> <span>ประกาศข่าว</span>
+                            </h2>
+                            <p class="text-sm text-slate-500 mt-0.5">แจ้งข่าวสาร คำสั่ง หรือข้อมูลสำคัญภายในกองช่างสุขาภิบาล</p>
+                        </div>
+                        <button type="button" onclick="renderNews()" class="ios-button ios-button-secondary text-sm py-2 px-4">
+                            <i class="fas fa-sync-alt"></i> รีเฟรชข่าว
+                        </button>
+                    </div>
+
+                    <form id="newsForm" class="flex flex-col sm:flex-row gap-3.5 items-stretch sm:items-center mb-6 bg-slate-50/90 p-4 rounded-2xl border border-slate-200/70">
+                        <input type="date" id="newsDate" class="flex-shrink-0" required>
+                        <input type="text" id="newsText" class="flex-1" placeholder="พิมพ์ข้อความประกาศ..." required>
+                        <button type="submit" class="ios-button ios-button-primary flex-shrink-0" id="newsSubmitBtn">
+                            <i class="fas fa-plus-circle"></i> เพิ่ม
+                        </button>
+                    </form>
+
+                    <ul id="newsList" class="space-y-3.5"></ul>
+                </div>
+            </div>
+
+            <!-- มุมมองที่ 2: พื้นที่แสดงหน้าเว็บย่อยภายในหน้าเดิม (ขยายความสูงเต็มจอเมื่อซ่อนแถบส่วนหัว) -->
+            <div id="iframeWorkspace" class="hidden flex-col flex-1 bg-white rounded-2xl shadow-md border border-slate-200/80 overflow-hidden h-[calc(100vh-2rem)] min-h-[640px] fade-in">
+                <!-- แถบเครื่องมือขนาดกะทัดรัดด้านบนจอย่อย พร้อมปุ่มกลับหน้าหลักที่คืนแถบส่วนหัว -->
+                <div class="bg-slate-900 text-white px-3.5 py-2 flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <button type="button" onclick="showNewsWorkspace(); closeAllDropdowns();" class="ios-button ios-button-secondary !py-1 !px-3 text-xs">
+                            <i class="fas fa-arrow-left text-blue-600"></i> กลับหน้าหลัก
+                        </button>
+                        <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
+                        <div class="truncate">
+                            <span id="workspaceTitle" class="font-heading font-semibold text-white text-xs sm:text-sm truncate inline-block align-middle">กำลังเปิดระบบงาน...</span>
+                            <span id="workspaceSubtitle" class="text-[11px] text-blue-200 hidden md:inline-block ml-2 truncate align-middle">แสดงผลภายในหน้าแดชบอร์ด</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="reloadWorkspaceFrame()" class="ios-button ios-button-secondary !py-1 !px-2.5 text-xs" title="โหลดหน้านี้ใหม่">
+                            <i class="fas fa-redo-alt"></i> <span class="hidden sm:inline">รีโหลด</span>
+                        </button>
+                        <a id="openNewTabFallback" href="#" target="_blank" rel="noopener noreferrer" class="ios-button ios-button-primary !py-1 !px-3 text-xs" title="หากหน้าเว็บปลายทางไม่อนุญาตให้แสดงในกรอบ สามารถกดเปิดแท็บใหม่ได้">
+                            <i class="fas fa-external-link-alt"></i> <span>เปิดแท็บใหม่</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- กรอบแสดงหน้าเว็บย่อยความสูงเต็มพื้นที่ที่เหลือ -->
+                <div class="relative flex-1 w-full bg-slate-100">
+                    <div id="iframeLoader" class="absolute inset-0 bg-white/85 backdrop-blur-xs flex flex-col items-center justify-center z-10 pointer-events-none transition-opacity duration-300">
+                        <div class="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-2.5"></div>
+                        <p class="text-sm font-medium text-slate-600">กำลังโหลดหน้าเว็บระบบงาน...</p>
+                    </div>
+                    <iframe
+                        id="subpageFrame"
+                        src="about:blank"
+                        class="w-full h-full border-0 bg-white block"
+                        onload="onWorkspaceFrameLoad()"
+                        allow="geolocation; camera; microphone; clipboard-read; clipboard-write"
+                    ></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- น้องแมวส้ม -->
+    <div id="catMascot" class="walking-cat-container" onclick="meow()" title="จิ้มพุงส้มหน่อยฮะ">
+        <div class="walking-cat">🐈</div>
+    </div>
+
+    <footer id="dashboardFooter" class="bg-slate-900 text-white text-center py-3.5 mt-auto shadow-inner relative z-20 border-t border-white/10">
+        <div class="text-xs sm:text-sm text-slate-300">© 2025 กองช่างสุขาภิบาล เทศบาลนครเกาะสมุย โดย นายธีรศักดิ์ พูลเขาล้าน</div>
+    </footer>
+</div>
+
+<div id="comingSoonModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+        <div class="text-5xl mb-4 animate-bounce">⏳</div>
+        <h2 class="text-2xl font-semibold mb-3 text-gray-800">อดใจรอหน่อยนะ</h2>
+        <p class="text-md mb-6 text-gray-600">ระบบนี้อยู่ระหว่างดำเนินการ</p>
+        <button onclick="hideComingSoon()" class="ios-button ios-button-primary">ปิด</button>
+    </div>
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyUBo00IJyYOd8jNiL-IMnYU6nB-4zvRHoPNBz4aRVNAILG8BM6v-8N4N9ck7hELAhuyg/exec";
+    
+    // URL ของ Google Apps Script ตัวกลางสำหรับออก Token
+    const AUTH_API_URL = "https://script.google.com/macros/s/AKfycbzeNSICmNXcmCVySMRsenZCOOkVHY-K3CnVsk1QAqr7N2bQPjEI8CumFcYa-wwYiLld/exec";
+
+    let editingId = null;
+
+    // ข้อมูลข่าวตัวอย่างสำหรับโหมด Demo Preview
+    let demoNewsData = [
+        {
+            id: 'demo-1',
+            date: '2026-11-18',
+            text: 'ประชุมติดตามความก้าวหน้าโครงการบริหารจัดการสิ่งปฏิกูลและน้ำเสีย ณ ห้องประชุมกองช่างสุขาภิบาล เวลา 09.30 น.'
+        },
+        {
+            id: 'demo-2',
+            date: '2026-11-20',
+            text: 'แจ้งกำหนดการตรวจรับงานจ้างเหมาขนส่งขยะมูลฝอย ประจำเดือนพฤศจิกายน ขอให้คณะกรรมการตรวจรับพร้อมกันเวลา 13.30 น.'
+        }
+    ];
+
+    function isDemoMode() {
+        return localStorage.getItem('sanitary_demo_mode') === 'true';
+    }
+
+    function enterDemoMode() {
+        localStorage.setItem('sanitary_demo_mode', 'true');
+        localStorage.setItem('sanitary_logged_user', 'เจ้าหน้าที่ทดลอง (Demo)');
+        localStorage.setItem('sanitary_last_active', Date.now());
+        Swal.fire({
+            title: 'เข้าสู่โหมดทดลองดูตัวอย่าง',
+            text: 'ยินดีต้อนรับสู่แดชบอร์ดกองช่างสุขาภิบาล (Demo Preview)',
+            icon: 'success',
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            checkAuth();
+        });
+    }
+
+    // ==========================================
+    // 📂 ระบบควบคุมเมนู Dropdown ทั้งหมด
+    // ==========================================
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-panel').forEach(panel => {
+            panel.classList.add('hidden');
+        });
+        document.querySelectorAll('.chevron-icon').forEach(icon => {
+            icon.style.transform = 'rotate(0deg)';
+        });
+    }
+
+    function toggleDropdown(panelId, triggerBtn) {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        const isCurrentlyHidden = panel.classList.contains('hidden');
+        closeAllDropdowns();
+        if (isCurrentlyHidden) {
+            panel.classList.remove('hidden');
+            const chevron = triggerBtn?.querySelector('.chevron-icon');
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    function selectDropdownMenu(targetUrl, title, isInternal, menuEl) {
+        closeAllDropdowns();
+        const quickSelect = document.getElementById('quickMenuSelect');
+        if (quickSelect) {
+            const targetPrefix = `${isInternal ? 'internal' : 'external'}|${targetUrl}|`;
+            for (const opt of quickSelect.options) {
+                if (opt.value.startsWith(targetPrefix)) {
+                    quickSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (isInternal) {
+            openSubpage(targetUrl, title, menuEl);
+        } else {
+            openExternalInWorkspace(targetUrl, title, menuEl);
+        }
+    }
+
+    function handleQuickSelect(selectEl) {
+        const val = selectEl.value;
+        if (!val) return;
+        closeAllDropdowns();
+        const [type, url, title] = val.split('|');
+        if (type === 'internal') {
+            openSubpage(url, title, null);
+        } else {
+            openExternalInWorkspace(url, title, null);
+        }
+    }
+
+    // ปิดดรอปดาวน์เมื่อคลิกพื้นที่ว่างนอกเมนู
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown-wrapper')) {
+            closeAllDropdowns();
+        }
+    });
+
+    // ==========================================
+    // 🖥️ จัดการการสลับมุมมองและซ่อน/แสดงแถบส่วนหัว (Header) อัตโนมัติ
+    // ==========================================
+    function setActiveMenuElement(el) {
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active-menu'));
+        document.querySelectorAll('.dropdown-trigger').forEach(btn => btn.classList.remove('active-trigger'));
+        if (el) {
+            el.classList.add('active-menu');
+            const parentTrigger = el.closest('.dropdown-wrapper')?.querySelector('.dropdown-trigger');
+            if (parentTrigger) parentTrigger.classList.add('active-trigger');
+        }
+    }
+
+    function setHeaderVisibility(showOnMain) {
+        const header = document.getElementById('dashboardHeader');
+        const nav = document.getElementById('dashboardDropdownNav');
+        const footer = document.getElementById('dashboardFooter');
+        const cat = document.getElementById('catMascot');
+        const section = document.getElementById('mainWorkspaceSection');
+
+        if (showOnMain) {
+            if (header) header.classList.remove('hidden');
+            if (nav) nav.classList.remove('hidden');
+            if (footer) footer.classList.remove('hidden');
+            if (cat) cat.classList.remove('hidden');
+            if (section) {
+                section.classList.remove('!p-2');
+                section.classList.add('p-4', 'sm:p-6');
+            }
+        } else {
+            // เมื่อเปิดหน้าเว็บย่อย ให้ซ่อนแถบส่วนหัว แถบเมนู และส่วนท้าย เพื่อเพิ่มพื้นที่ความสูงหน้าจอย่อยสูงสุด
+            if (header) header.classList.add('hidden');
+            if (nav) nav.classList.add('hidden');
+            if (footer) footer.classList.add('hidden');
+            if (cat) cat.classList.add('hidden');
+            if (section) {
+                section.classList.remove('p-4', 'sm:p-6');
+                section.classList.add('!p-2');
+            }
+        }
+    }
+
+    function showNewsWorkspace() {
+        const newsWs = document.getElementById('newsWorkspace');
+        const iframeWs = document.getElementById('iframeWorkspace');
+        const frame = document.getElementById('subpageFrame');
+        const quickSelect = document.getElementById('quickMenuSelect');
+
+        iframeWs.classList.add('hidden');
+        iframeWs.classList.remove('flex');
+        newsWs.classList.remove('hidden');
+
+        // คืนแถบส่วนหัวเต็มรูปแบบเมื่อกลับมาหน้าหลัก
+        setHeaderVisibility(true);
+
+        if (frame) {
+            frame.src = 'about:blank';
+        }
+        if (quickSelect) {
+            quickSelect.value = '';
+        }
+        setActiveMenuElement(null);
+    }
+
+    function loadUrlInWorkspace(secureUrl, title, subtitle, menuEl) {
+        const newsWs = document.getElementById('newsWorkspace');
+        const iframeWs = document.getElementById('iframeWorkspace');
+        const frame = document.getElementById('subpageFrame');
+        const loader = document.getElementById('iframeLoader');
+        const titleEl = document.getElementById('workspaceTitle');
+        const subEl = document.getElementById('workspaceSubtitle');
+        const fallbackBtn = document.getElementById('openNewTabFallback');
+
+        setActiveMenuElement(menuEl);
+
+        if (titleEl) titleEl.textContent = title || 'ระบบงานกองช่างสุขาภิบาล';
+        if (subEl) subEl.textContent = subtitle || secureUrl;
+        if (fallbackBtn) fallbackBtn.href = secureUrl;
+
+        newsWs.classList.add('hidden');
+        iframeWs.classList.remove('hidden');
+        iframeWs.classList.add('flex');
+
+        // ซ่อนแถบส่วนหัวเมื่อเปิดหน้าเว็บย่อยเพื่อขยายความสูงหน้าจอ
+        setHeaderVisibility(false);
+
+        if (loader) {
+            loader.style.opacity = '1';
+            loader.classList.remove('hidden');
+        }
+        if (frame) {
+            frame.src = secureUrl;
+        }
+    }
+
+    function onWorkspaceFrameLoad() {
+        const loader = document.getElementById('iframeLoader');
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.classList.add('hidden'), 250);
+        }
+    }
+
+    function reloadWorkspaceFrame() {
+        const frame = document.getElementById('subpageFrame');
+        const loader = document.getElementById('iframeLoader');
+        if (frame && frame.src && frame.src !== 'about:blank') {
+            if (loader) {
+                loader.classList.remove('hidden');
+                loader.style.opacity = '1';
+            }
+            const currentSrc = frame.src;
+            frame.src = 'about:blank';
+            setTimeout(() => { frame.src = currentSrc; }, 60);
+        }
+    }
+
+    function openExternalInWorkspace(targetUrl, title, menuEl) {
+        const loggedUser = localStorage.getItem('sanitary_logged_user');
+        if (!loggedUser) {
+            checkAuth();
+            return;
+        }
+        loadUrlInWorkspace(targetUrl, title || 'ระบบภายนอก', 'เชื่อมต่อระบบภายนอกภายในหน้าแดชบอร์ด', menuEl);
+    }
+
+    // ==========================================
+    // 🎫 ฟังก์ชันกลางสำหรับขอ Token และเปิดเว็บย่อยภายในหน้าเดิม
+    // ==========================================
+    async function openSubpage(targetUrl, title, menuEl) {
+        const loggedUser = localStorage.getItem('sanitary_logged_user');
+
+        if (!loggedUser) {
+            checkAuth();
+            return;
+        }
+
+        const menuTitle = title || (menuEl ? menuEl.textContent.trim() : 'ระบบงานภายใน');
+
+        // หากอยู่ในโหมด Demo Preview ให้จำลองการสร้าง Token และเปิดแสดงในหน้าเดิมทันที
+        if (isDemoMode()) {
+            const demoToken = 'DEMO_TOKEN_' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            const separator = targetUrl.includes('?') ? '&' : '?';
+            const secureUrl = `${targetUrl}${separator}token=${encodeURIComponent(demoToken)}`;
+            loadUrlInWorkspace(
+                secureUrl,
+                menuTitle,
+                `โหมดทดลอง (Demo Token: ${demoToken})`,
+                menuEl
+            );
+            return;
+        }
+
+        Swal.fire({
+            title: 'กำลังยืนยันสิทธิ์เข้าใช้งาน...',
+            text: `กำลังเตรียมเปิด ${menuTitle}`,
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+            const resp = await fetch(`${AUTH_API_URL}?action=generateToken&user=${encodeURIComponent(loggedUser)}`);
+            const result = await resp.json();
+            Swal.close();
+
+            if (result.success && result.token) {
+                const separator = targetUrl.includes('?') ? '&' : '?';
+                const secureUrl = `${targetUrl}${separator}token=${encodeURIComponent(result.token)}`;
+                loadUrlInWorkspace(
+                    secureUrl,
+                    menuTitle,
+                    'ยืนยันสิทธิ์ Token ชั่วคราวเรียบร้อย • แสดงผลภายในหน้าแดชบอร์ด',
+                    menuEl
+                );
+            } else {
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถสร้างรหัสผ่านชั่วคราวได้', 'error');
+            }
+        } catch (err) {
+            Swal.close();
+            Swal.fire('การเชื่อมต่อขัดข้อง', 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้', 'error');
+        }
+    }
+
+    // ==========================================
+    // ⏱️ ระบบตั้งเวลาหมดอายุอัตโนมัติ (20 นาที)
+    // ==========================================
+    const TIMEOUT_DURATION = 20 * 60 * 1000; // 20 นาทีในหน่วยมิลลิวินาที
+    let inactivityTimer;
+
+    function resetInactivityTimer() {
+        if (!localStorage.getItem('sanitary_logged_user')) return;
+        
+        clearTimeout(inactivityTimer);
+        localStorage.setItem('sanitary_last_active', Date.now());
+
+        inactivityTimer = setTimeout(() => {
+            handleSessionTimeout();
+        }, TIMEOUT_DURATION);
+    }
+
+    function handleSessionTimeout() {
+        localStorage.removeItem('sanitary_logged_user');
+        localStorage.removeItem('sanitary_last_active');
+        localStorage.removeItem('sanitary_demo_mode');
+        
+        Swal.fire({
+            title: 'หมดเวลาการใช้งาน',
+            text: 'เนื่องจากไม่มีการใช้งานระบบเกิน 20 นาที กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
+            icon: 'warning',
+            confirmButtonText: 'ตกลง',
+            confirmButtonColor: '#3b72e5',
+            allowOutsideClick: false
+        }).then(() => {
+            location.reload();
+        });
+    }
+
+    function checkSessionExpiry() {
+        const lastActive = localStorage.getItem('sanitary_last_active');
+        const loggedUser = localStorage.getItem('sanitary_logged_user');
+
+        if (loggedUser && lastActive) {
+            const elapsed = Date.now() - parseInt(lastActive, 10);
+            if (elapsed > TIMEOUT_DURATION) {
+                handleSessionTimeout();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
+        window.addEventListener(event, resetInactivityTimer);
+    });
+
+    // ==========================================
+    // 🔐 ระบบตรวจสอบสิทธิ์
+    // ==========================================
+    function checkAuth() {
+        if (!checkSessionExpiry()) return;
+
+        const loggedUser = localStorage.getItem('sanitary_logged_user');
+        const loginOverlay = document.getElementById('loginOverlay');
+        const mainDashboard = document.getElementById('mainDashboard');
+        const statusBadge = document.getElementById('systemStatusBadge');
+
+        if (loggedUser) {
+            loginOverlay.classList.add('hidden');
+            mainDashboard.classList.remove('hidden');
+            mainDashboard.classList.add('flex');
+            document.getElementById('welcomeUser').textContent = `ผู้ใช้งาน: ${loggedUser}`;
+            if (isDemoMode() && statusBadge) {
+                statusBadge.textContent = '● โหมดทดลองดูตัวอย่าง (Demo)';
+                statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/30';
+            }
+            setHeaderVisibility(true);
+            resetInactivityTimer();
+            renderNews();
+        } else {
+            loginOverlay.classList.remove('hidden');
+            mainDashboard.classList.add('hidden');
+            mainDashboard.classList.remove('flex');
+        }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const userIn = document.getElementById('loginUsername').value.trim();
+        const passIn = document.getElementById('loginPassword').value.trim();
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังตรวจสอบสิทธิ์...';
+
+        try {
+            const url = `${API_URL}?action=login&username=${encodeURIComponent(userIn)}&password=${encodeURIComponent(passIn)}`;
+            const response = await fetch(url);
+            const result = await response.json();
+
+            if (result.success) {
+                localStorage.removeItem('sanitary_demo_mode');
+                localStorage.setItem('sanitary_logged_user', result.displayName);
+                localStorage.setItem('sanitary_last_active', Date.now());
+                Swal.fire({
+                    title: 'เข้าสู่ระบบสำเร็จ',
+                    text: `ยินดีต้อนรับ ${result.displayName}`,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    checkAuth();
+                });
+            } else {
+                Swal.fire({
+                    title: 'ไม่อนุญาตให้เข้าใช้งาน',
+                    text: result.message || 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง',
+                    icon: 'error',
+                    confirmButtonText: 'ลองใหม่อีกครั้ง',
+                    confirmButtonColor: '#3b72e5'
+                });
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+            Swal.fire({
+                title: 'การเชื่อมต่อขัดข้อง',
+                text: 'ไม่สามารถติดต่อฐานข้อมูลตรวจสอบสิทธิ์ได้ (หากอยู่ในหน้า Preview สามารถกดปุ่ม Demo Preview ด้านบนได้ครับ)',
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#3b72e5'
+            });
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
+        }
+    });
+
+    function logout() {
+        Swal.fire({
+            title: 'ออกจากระบบ?',
+            text: "คุณต้องการออกจากระบบใช่หรือไม่",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b72e5',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'ออกจากระบบ',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('sanitary_logged_user');
+                localStorage.removeItem('sanitary_last_active');
+                localStorage.removeItem('sanitary_demo_mode');
+                location.reload();
+            }
+        });
+    }
+
+    // ==========================================
+    // ⚙️ ฟังก์ชันการทำงานหลักของแดชบอร์ด
+    // ==========================================
+    function escapeHTML(str) {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/'/g, "&#39;")
+            .replace(/"/g, "&quot;");
+    }
+
+    function getTodayDate() {
+        const d = new Date();
+        const month = (d.getMonth() + 1).toString().padStart(2, '0');
+        const day = d.getDate().toString().padStart(2, '0');
+        return `${d.getFullYear()}-${month}-${day}`;
+    }
+
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('th-TH', {
+        year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    function comingSoon() {
+        const modal = document.getElementById('comingSoonModal');
+        const modalContent = document.getElementById('modalContent');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function hideComingSoon() {
+        const modal = document.getElementById('comingSoonModal');
+        const modalContent = document.getElementById('modalContent');
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+
+    function meow() {
+        Swal.fire({
+            title: 'เหมียววว~ 🐾',
+            text: 'รับปลาทูเพิ่มไหมฮะ เจ้านาย?',
+            icon: 'info',
+            confirmButtonText: 'ลูบหัว 1 ที',
+            confirmButtonColor: '#f59e0b'
+        });
+    }
+
+    if (document.getElementById('newsDate')) {
+        document.getElementById('newsDate').value = getTodayDate();
+    }
+
+    async function fetchNews() {
+        if (isDemoMode()) {
+            return [...demoNewsData];
+        }
+        try {
+            const res = await fetch(`${API_URL}?action=getNews`);
+            const data = await res.json();
+            return data.news || [];
+        } catch (e) {
+            document.getElementById('newsList').innerHTML = `<li class="text-red-500 p-4 bg-red-50 rounded-xl shadow-sm">เกิดข้อผิดพลาดในการโหลดข่าว: ${e.message}</li>`;
+            console.error("Error fetching news:", e);
+            return [];
+        }
+    }
+
+    async function renderNews() {
+        const ul = document.getElementById('newsList');
+        const badge = document.getElementById('newsCountBadge');
+        ul.innerHTML = `<li class="text-slate-500 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-2"><i class="fas fa-spinner fa-spin text-blue-600"></i> กำลังโหลด...</li>`;
+        const news = await fetchNews();
+
+        if (badge) {
+            badge.textContent = `${news.length} รายการ`;
+        }
+
+        if (!news.length) {
+            ul.innerHTML = `<li class="text-slate-500 p-5 bg-slate-50 rounded-2xl border border-slate-100 text-center">ยังไม่มีประกาศ</li>`;
+            return;
+        }
+
+        ul.innerHTML = news.slice().reverse().map(item => `
+            <li class="bg-white p-4 sm:px-5 rounded-2xl shadow-sm hover:shadow-md transition fade-in flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center border border-slate-200/80">
+                <div class="flex-1 leading-relaxed">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 mr-2">
+                        <i class="far fa-calendar-alt"></i> ${escapeHTML(item.date)}
+                    </span>
+                    <span class="text-slate-800 font-medium">${escapeHTML(item.text)}</span>
+                </div>
+                <div class="flex gap-2 mt-2 sm:mt-0 flex-shrink-0">
+                    <button onclick="startEditNews('${escapeHTML(item.id)}', '${escapeHTML(item.date)}', '${escapeHTML(item.text)}')" class="ios-button ios-button-warning text-sm py-2 px-3.5">
+                        <i class="fas fa-edit"></i> แก้ไข
+                    </button>
+                    <button onclick="deleteNews('${escapeHTML(item.id)}')" class="ios-button ios-button-danger text-sm py-2 px-3.5">
+                        <i class="fas fa-trash-alt"></i> ลบ
+                    </button>
+                </div>
+            </li>
+        `).join('');
+    }
+
+    async function addNews(e) {
+        e.preventDefault();
+        const date = document.getElementById('newsDate').value;
+        const text = document.getElementById('newsText').value.trim();
+        if (!date || !text) {
+            Swal.fire('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกวันที่และข้อความประกาศ', 'warning');
+            return;
+        }
+
+        if (isDemoMode()) {
+            if (editingId) {
+                demoNewsData = demoNewsData.map(item => item.id === editingId ? { ...item, date, text } : item);
+                Swal.fire('สำเร็จ! (Demo)', 'แก้ไขประกาศจำลองเรียบร้อย', 'success');
+            } else {
+                demoNewsData.push({ id: 'demo-' + Date.now(), date, text });
+                Swal.fire('สำเร็จ! (Demo)', 'เพิ่มประกาศจำลองเรียบร้อย', 'success');
+            }
+            document.getElementById('newsForm').reset();
+            document.getElementById('newsDate').value = getTodayDate();
+            editingId = null;
+            document.getElementById('newsSubmitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> เพิ่ม';
+            renderNews();
+            return;
+        }
+
+        let url = `${API_URL}?action=addNews&date=${encodeURIComponent(date)}&text=${encodeURIComponent(text)}`;
+        let method = 'GET';
+
+        if (editingId) {
+            url = `${API_URL}?action=editNews&id=${encodeURIComponent(editingId)}&date=${encodeURIComponent(date)}&text=${encodeURIComponent(text)}`;
+        }
+
+        try {
+            const resp = await fetch(url, { method });
+            const result = await resp.json();
+            if (result.success) {
+                Swal.fire('สำเร็จ!', result.message || 'บันทึกข้อมูลเรียบร้อย', 'success');
+            } else {
+                Swal.fire('เกิดข้อผิดพลาด!', result.message || 'ไม่สามารถบันทึกข้อมูลได้', 'error');
+            }
+        } catch (error) {
+            Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้', 'error');
+            console.error("Error adding/editing news:", error);
+        }
+
+        document.getElementById('newsForm').reset();
+        document.getElementById('newsDate').value = getTodayDate();
+        editingId = null;
+        document.getElementById('newsSubmitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> เพิ่ม';
+        renderNews();
+    }
+
+    async function deleteNews(id) {
+        Swal.fire({
+            title: 'ยืนยันการลบ',
+            text: "คุณแน่ใจหรือไม่ว่าต้องการลบประกาศนี้?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                if (isDemoMode()) {
+                    demoNewsData = demoNewsData.filter(item => item.id !== id);
+                    Swal.fire('ลบสำเร็จ! (Demo)', 'ประกาศจำลองถูกลบเรียบร้อยแล้ว', 'success');
+                    renderNews();
+                    return;
+                }
+
+                try {
+                    const resp = await fetch(`${API_URL}?action=deleteNews&id=${encodeURIComponent(id)}`);
+                    const result = await resp.json();
+                    if (result.success) {
+                        Swal.fire('ลบสำเร็จ!', result.message || 'ประกาศถูกลบเรียบร้อยแล้ว', 'success');
+                        renderNews();
+                    } else {
+                        Swal.fire('เกิดข้อผิดพลาด!', result.message || 'ไม่สามารถลบประกาศได้', 'error');
+                    }
+                } catch (e) {
+                    Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้', 'error');
+                    console.error("Error deleting news:", e);
+                }
+            }
+        });
+    }
+
+    function startEditNews(id, date, text) {
+        document.getElementById('newsDate').value = date;
+        document.getElementById('newsText').value = text;
+        editingId = id;
+        document.getElementById('newsSubmitBtn').innerHTML = '<i class="fas fa-save"></i> บันทึก';
+        document.getElementById('newsText').focus();
+    }
+
+    document.getElementById('newsForm').onsubmit = addNews;
+    window.startEditNews = startEditNews;
+    window.deleteNews = deleteNews;
+
+    checkAuth();
+</script>
+
+</body>
+</html>
